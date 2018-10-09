@@ -3,8 +3,8 @@
 {% block content %}
     <h1>Create a new post:</h1>
     <form method='POST'>
-        <input type='text' name='title' placeholder='Title' />
-        <input type="text" name='body' placeholder="Write a new post here." />
-        <input type="submit" value='Add Blog' />
+        <p><input type='text' name='title' placeholder='Add a title.' /></p>
+        <p><input type="textarea rows='4' cols='50'" name='body' placeholder="Write post here." /></p>
+        <p><input type="submit" value='Add Blog' /></p>
     </form>
 {% endblock %}
