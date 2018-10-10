@@ -2,9 +2,12 @@
 
 {% block content %}
     <h1>Create a new post:</h1>
-    <form method='POST'>
+
+    <form id='blog_form' method='POST'>
+        <input type="hidden" name="blog_id" value="{{blog_id}}" />
         <p><input type='text' name='title' placeholder='Add a title.' /></p>
-        <p><input type="textarea" name='body' placeholder="Write post here." /></p>
+        <p><textarea form='blog_form' name='body' cols="30" rows="10" placeholder="Write post here." /></textarea></p>
         <p><input type="submit" value='Add Blog' /></p>
     </form>
-{% endblock %}
+    
+    {% endblock %}

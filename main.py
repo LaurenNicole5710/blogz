@@ -19,13 +19,10 @@ class Blog(db.Model):
         self.body = body
 
 blogs = Blog.query.all()
-@app.route('/')
-def index():
-    return render_template('blog.html', title='Blog List', blogs=blogs)
 
-@app.route('/blog')
+@app.route('/')
 def blog_list():
-    return render_template('blog.html', title='Blog List', blogs=blogs )
+    return render_template('blog_list.html', title='Blog List', blogs=blogs )
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -38,7 +35,11 @@ def newpost():
     return render_template('newpost.html', title="New Post")
 
 
-
+@app.route('/blog_id', methods=['POST'])
+def blog_id():
+    blog_id = request.form['blog_id']
+    blog = Blog.query.get(blog_id)
+    return render_template('blog_id.html', title="Your Entry", blog=blog)
 
 if __name__ == '__main__':
     app.run()
