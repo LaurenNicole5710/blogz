@@ -31,11 +31,15 @@ def newpost():
         blog_body = request.form['body']
         new_blog = Blog(blog_title, blog_body)
         db.session.add(new_blog)
-        db.session.commit()   
+        db.session.commit()  
+        if blog_title != '' and blog_body != '':
+            return redirect('/blog_id')
+        else: 
+            # TODO - flash message
+            return 'ERROR'
     return render_template('newpost.html', title="New Post")
 
-
-@app.route('/blog_id', methods=['POST'])
+@app.route('/blog_id', methods=['GET', 'POST'])
 def blog_id():
     blog_id = request.form['blog_id']
     blog = Blog.query.get(blog_id)
