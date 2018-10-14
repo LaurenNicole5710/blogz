@@ -29,25 +29,24 @@ def blog_list():
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-    if request.method == 'POST':
-        blog_title = request.form['title']
-        blog_body = request.form['body']
-        new_blog = Blog(blog_title, blog_body)
-        db.session.add(new_blog)
-        db.session.commit()  
-        if blog_title != '' and blog_body != '':
-            return redirect('/blog_id')
-        else: 
-            # TODO - flash message
-            return 'ERROR'
+    blog_title = request.form['title']
+    blog_body = request.form['body']
+    new_blog = Blog(blog_title, blog_body)
+    db.session.add(new_blog)
+    db.session.commit()  
+    if blog_title != '' and blog_body != '':
+        return redirect('/blog_id')
+    else: 
+        # TODO - flash message
+        return 'ERROR'
     return render_template('newpost.html', title="New Post")
 
-@app.route('/blog_id', methods=['GET', 'POST'])
+@app.route('/blog_id', methods=['GET'])
 def blog_id():
     #blogg_id = request.form['blog_id']
-    #blog = Blog.query.get(Blog.id)
-    user_blog = Blog.query.filter_by(id=Blog.id).first()
-    return render_template('blog_id.html', title="Your Entry", user_blog=user_blog)
+    blog = request.args.get('blog_id')
+    blog = Blog.query.get(blog)
+    return render_template('blog_id.html', title="Your Entry", blog=blog)
 
 if __name__ == '__main__':
     app.run()
