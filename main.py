@@ -29,12 +29,12 @@ def blog_list():
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-    blog_title = request.form['title']
-    blog_body = request.form['body']
+    blog_title = request.args.get('title')
+    blog_body = request.args.get('body')
     new_blog = Blog(blog_title, blog_body)
     db.session.add(new_blog)
     db.session.commit()  
-    if blog_title != '' and blog_body != '':
+    if blog_title == '' or blog_body == '':
         return redirect('/blog_id')
     else: 
         # TODO - flash message
