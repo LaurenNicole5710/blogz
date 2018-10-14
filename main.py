@@ -18,10 +18,6 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
-
-
-
-
 @app.route('/')
 def blog_list():
     blogs = Blog.query.all()
@@ -34,11 +30,11 @@ def newpost():
     new_blog = Blog(blog_title, blog_body)
     db.session.add(new_blog)
     db.session.commit()  
-    if blog_title == '' or blog_body == '':
-        return redirect('/blog_id')
-    else: 
+    #if blog_title == '' or blog_body == '':
+        #return redirect('/blog_id')
+    #else: 
         # TODO - flash message
-        return 'ERROR'
+        #return 'ERROR'
     return render_template('newpost.html', title="New Post")
 
 @app.route('/blog_id', methods=['GET'])
