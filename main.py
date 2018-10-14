@@ -18,12 +18,13 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
-blogs = Blog.query.all()
+
 
 
 
 @app.route('/')
 def blog_list():
+    blogs = Blog.query.all()
     return render_template('blog_list.html', title='Blog List', blogs=blogs )
 
 @app.route('/newpost', methods=['POST', 'GET'])
