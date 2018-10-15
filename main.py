@@ -18,19 +18,19 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
-@app.route('/')
+@app.route('/blog')
 def blog_list():
     blogs = Blog.query.all()
     return render_template('blog_list.html', title='Blog List', blogs=blogs )
 
-@app.route('/newpost', methods=['POST', 'GET'])
+@app.route('/newpost', methods=['GET'])
 def newpost():
     blog_title = request.args.get('title')
     blog_body = request.args.get('body')
     new_blog = Blog(blog_title, blog_body)
     db.session.add(new_blog)
     db.session.commit()  
-    #if blog_title == '' or blog_body == '':
+    #if blog_title != ' ' or blog_body != ' ':
         #return redirect('/blog_id')
     #else: 
         # TODO - flash message
@@ -39,7 +39,6 @@ def newpost():
 
 @app.route('/blog_id', methods=['GET'])
 def blog_id():
-    #blogg_id = request.form['blog_id']
     blog = request.args.get('blog_id')
     blog = Blog.query.get(blog)
     return render_template('blog_id.html', title="Your Entry", blog=blog)
