@@ -34,20 +34,20 @@ def newpost():
         blog_body = request.form['body']
         new_blog = Blog(blog_title, blog_body)
     
-        if blog_title == '':
+        if new_blog.title == '':
             title_error = "Please enter a title."
-            blog_title = ''
-        elif blog_body == '':
+           # blog_title = ''
+        if new_blog.body == '':
             body_error = "Please enter blog content."
-            blog_body = ''
+            #blog_body = ''
        
-        if blog_title or blog_body != '':
+        if not title_error and not body_error:
             db.session.add(new_blog)
             db.session.commit()  
             return redirect('/blog_id?id=' + str(new_blog.id))
-    else:
-        return render_template('newpost.html', title_error=title_error, body_error=body_error)
-
+        else:
+            return render_template('newpost.html', title_error=title_error, body_error=body_error)
+    return render_template('newpost.html')
 @app.route('/blog_id', methods=['GET'])
 def blog_id():
     id = request.args.get('id')
