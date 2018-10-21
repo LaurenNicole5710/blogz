@@ -13,34 +13,47 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(120))
+    
+
 
     def __init__(self, title, body):
         self.title = title
         self.body = body
 
-@app.route('/blog')
+
+@app.route('/')
 def blog_list():
-    blogs = Blog.query.all()
+    blogs = Blog.query.order_by(Blog.id.desc()).all()
     return render_template('blog_list.html', title='Blog List', blogs=blogs )
 
-@app.route('/newpost', methods=['GET'])
+@app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
-    blog_title = request.args.get('title')
-    blog_body = request.args.get('body')
-    new_blog = Blog(blog_title, blog_body)
-    db.session.add(new_blog)
-    db.session.commit()  
-    #if blog_title != ' ' or blog_body != ' ':
-        #return redirect('/blog_id')
-    #else: 
-        # TODO - flash message
-        #return 'ERROR'
-    return render_template('newpost.html', title="New Post")
+    title_error = ''
+    body_error = ''
+    
+    if request.method == 'POST':
+        blog_title = request.form['title']
+        blog_body = request.form['body']
+        new_blog = Blog(blog_title, blog_body)
+    
+        if blog_title == '':
+            title_error = "Please enter a title."
+            blog_title = ''
+        elif blog_body == '':
+            body_error = "Please enter blog content."
+            blog_body = ''
+       
+        if blog_title or blog_body != '':
+            db.session.add(new_blog)
+            db.session.commit()  
+            return redirect('/blog_id?id=' + str(new_blog.id))
+    else:
+        return render_template('newpost.html', title_error=title_error, body_error=body_error)
 
 @app.route('/blog_id', methods=['GET'])
 def blog_id():
-    blog = request.args.get('blog_id')
-    blog = Blog.query.get(blog)
+    id = request.args.get('id')
+    blog = Blog.query.filter_by(id=id).first()
     return render_template('blog_id.html', title="Your Entry", blog=blog)
 
 if __name__ == '__main__':
