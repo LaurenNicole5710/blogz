@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <a href="/">Main blog page</a> |
-        <a href="/newpost">Add a new post</a>
-        <title>{{title}}</title>
+            <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+            <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-brown.css">
+            <div class="w3-bar w3-border w3-light-grey">
+            <a href="/" class= "w3-bar-item w3-button">Home</a>
+            <a href="/newpost" class= "w3-bar-item w3-button">Add Blog</a>
+            </div>
+            <title>{{title}}</title>
     </head>
 <body>
+    <div>
     {% block content %}
     {% endblock %}
+    </div>
 </body>
 </html>
 

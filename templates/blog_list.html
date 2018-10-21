@@ -3,8 +3,8 @@
 {% block content %}
 
 {% for blog in blogs %}
-    <h1><a href='http://localhost:5000/blog_id?id={{blog.id}}'>{{blog.title}}</a></h1>
-    <h3>{{blog.body}}</h3>
+<div align= "center" class="w3-container w3-hover-light-grey"><h2><a href='http://localhost:5000/blog_id?id={{blog.id}}'>{{blog.title}}</a></h2>
+    <h3>{{blog.body}}</h3></div>
 {% endfor %}
 
 {% endblock %}
