@@ -1,7 +1,0 @@
-for diffrent parts use the thing your acting upon and the sction you're doing to it ex movies/add 
-in the app route. 
-
-user_id = user.id in session
-
-filter_by will give an array because it expects multiple responses.
-add .first() or .one() to return instead
