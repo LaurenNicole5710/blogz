@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for blog in owner_blogs %}
+<div align= "center" class="w3-container w3-hover-light-grey"><h2><a href='http://localhost:5000"/blog?user={{blog.owner_id}}">{{blog.owner.username}}'>{{blog.title}}</a></h2>
+    <h3>{{blog.body}}</h3></div>
+{% endfor %}
+
+
+{% endblock %}

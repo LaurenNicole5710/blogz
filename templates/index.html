@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for user in user_list %}
+<div align= "center" class="w3-container w3-hover-light-grey"><h2><a href='http://localhost:5000/blog?user_list={{user.id}}'>{{user.username}}</a></h2>
+</div>
+{% endfor %}
+
+{% endblock %}
