@@ -3,9 +3,10 @@
 {% block content %}
 
 {% for blog in blogs %}
-<div align= "center" class="w3-container w3-hover-light-grey"><h2><a href='http://localhost:5000/blog_id?id={{blog.id}}'>{{blog.title}}</a></h2>
+<div align= "center" class="w3-container w3-hover-light-grey"><h2><a href='http://localhost:5000/blog?id={{blog.id}}'>{{blog.title}}</a></h2>
     <h3>{{blog.body}}</h3>
-    <h6>Written by {{blog.owner.username}}</h6></div>
+    <p><h6>Written by:<a href='http://localhost:5000/blog?user={{blog.owner.id}}'>{{blog.owner.username}}</a></h6></p>
+</div>
 {% endfor %}
 
 {% endblock %}

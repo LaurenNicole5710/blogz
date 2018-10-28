@@ -5,9 +5,9 @@
 
 {% for blog in user_blogs %}
 <div align= "center">
-        <p><h2><a href='http://localhost:5000/blog?id={{blog.id}}'>{{blog.title}}</a></h2></p>
+        <p><h2><a href='/blog_id?blog={{blog.id}}'>{{blog.title}}</a></h2></p>
         <p><h3>{{blog.body}}</h3></p>
-        <p><h6>Written by:<a href='http://localhost:5000/blog?user={{blog.owner.id}}'>{{blog.owner.username}}</a></h6></p>
+        <p><h6>Written by:<a href='http://localhost:5000/blog?user={{blog.owner}}'>{{blog.owner.username}}</a></h6></p>
     </div>
 {% endfor %}
 

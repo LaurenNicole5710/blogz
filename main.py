@@ -46,14 +46,19 @@ def index():
 
 @app.route('/blog', methods=['GET'])
 def blog_list():
-    blogs = Blog.query.order_by(Blog.id.desc()).all()
-    #username = User.query.filter_by(username=username).first()
+    if "user" in request.args:
+        user_id = request.args.get("user")
+        user = User.query.get(user_id)
+        user_blogs = Blog.query.filter_by(owner=user).all()
+        return render_template("singleUser.html", title= 'User Blogs', user_blogs=user_blogs)
+    
+    if "id" in request.args:
+        id = request.args.get("id")
+        blog = Blog.query.filter_by(id=id).first()
+        return render_template('blog_id.html', title="Your Entry", blog=blog)
+    
+    blogs = Blog.query.order_by(Blog.id.desc())
     return render_template('blog_list.html', title='Blog List', blogs=blogs )
-    owner = User.query.filter_by(username=session['username']).first()
-    owner_blogs = Blog.query.filter_by(owner=owner).all()
-    #def single_user():
-    #owner_blogs = Blog.query.get(Blog.owner_id.desc()).all()
-    return render_template('singleUser.html', owner_blogs=owner_blogs)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def newpost():
@@ -76,16 +81,16 @@ def newpost():
         if not title_error and not body_error:
             db.session.add(new_blog)
             db.session.commit()  
-            return redirect('/blog_id?id=' + str(new_blog.id))
+            return redirect('/blog?id=' + str(new_blog.id))
         else:
             return render_template('newpost.html', title_error=title_error, body_error=body_error)
     return render_template('newpost.html')
 
-@app.route('/blog_id', methods=['GET'])
-def blog_id():
-    id = request.args.get('id')
-    blog = Blog.query.filter_by(id=id).first()
-    return render_template('blog_id.html', title="Your Entry", blog=blog)
+#@app.route('/blog_id', methods=['GET'])
+#def blog_id():
+    #id = request.args.get('id')
+    #blog = Blog.query.filter_by(id=id).first()
+    #return render_template('blog_id.html', title="Your Entry", blog=blog)
 
 
 
@@ -144,7 +149,7 @@ def login():
         if user and user.password == password:
             session['username'] = username
             flash("Logged in")
-            return redirect('/blog')
+            return redirect('/newpost')
         else:
             flash('User password incorrect, or user does not exist', 'error')
 

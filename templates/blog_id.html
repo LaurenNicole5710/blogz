@@ -4,6 +4,7 @@
 <div align= "center">
 <p><h2>{{blog.title}}</h2></p>
 <p><h3>{{blog.body}}</h3></p>
+<p><h6>Written by:<a href='http://localhost:5000/blog?user={{blog.owner.id}}'>{{blog.owner.username}}</a></h6></p>
 </div>
 
 {% endblock %}
