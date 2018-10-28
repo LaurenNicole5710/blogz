@@ -31,7 +31,7 @@ class User(db.Model):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.blogs = blogs
+
 
 @app.before_request
 def require_login():
@@ -72,34 +72,22 @@ def newpost():
         new_blog = Blog(blog_title, blog_body, blog_owner)
     
         if new_blog.title == '':
-            title_error = "Please enter a title."
-            blog_title = ''
+            flash("Please enter a title.", "error")
+        
         if new_blog.body == '':
-            body_error = "Please enter blog content."
-            blog_body = ''
+            flash("Please enter blog content.", "error")
        
-        if not title_error and not body_error:
+        if new_blog.title != '' and new_blog.body != '':
             db.session.add(new_blog)
             db.session.commit()  
             return redirect('/blog?id=' + str(new_blog.id))
         else:
-            return render_template('newpost.html', title_error=title_error, body_error=body_error)
+            return render_template('newpost.html')
     return render_template('newpost.html')
-
-#@app.route('/blog_id', methods=['GET'])
-#def blog_id():
-    #id = request.args.get('id')
-    #blog = Blog.query.filter_by(id=id).first()
-    #return render_template('blog_id.html', title="Your Entry", blog=blog)
-
-
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    username_error = ''
-    password_error = ''
-    verify_error = ''
-    
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -107,25 +95,19 @@ def signup():
         existing_user = User.query.filter_by(username=username).first()
 
         if username == '':
-            username_error = "Please enter a username."
-        elif ' ' in username:
-            username_error = "Username may not contain any spaces."
-            username = ''
-        elif len(username) < 3 or len(username)> 20: 
-            username_error = "Please enter a username between 3 and 20 characters."
-            username = ''
+            flash("Please enter a username.", "error")
+        if len(username) < 3: 
+            flash("Please enter a username greater than 3 characters.", "error")
         
         if password == '':
-            password_error = "Please enter a password."
-        elif (len(password)) <3 or (len(password))> 20:
-            password_error = "Please enter a password between 3 and 20 characters"
-            
+            flash("Please enter a password.", "error")
+        if (len(password)) <3:
+            flash("Please enter a password greater than 3 characters.", "error")
+        
         if verify == '':
-            verify_error = "Please confirm your password."
-        elif password != verify:
-            verify_error = "Passwords do not match."
-
-        if not username_error and not password_error and not verify_error:
+            flash("Please confirm your password.", "error")
+        if password != verify:
+            flash("Passwords do not match.", "error")
 
             if not existing_user:
                 new_user = User(username, password)
@@ -134,9 +116,8 @@ def signup():
                 session['username'] = username
                 return redirect('/newpost')
             else:
-            # TODO - user better response messaging
-                return "<h1>Duplicate user</h1>"
-    return render_template('signup.html', username_error=username_error, password_error=password_error, verify_error=verify_error)
+                flash("User already exists.")
+    return render_template('signup.html')
 
     
 
@@ -150,8 +131,10 @@ def login():
             session['username'] = username
             flash("Logged in")
             return redirect('/newpost')
+        if user and user.password != password:
+            flash('User password incorrect.', 'error')
         else:
-            flash('User password incorrect, or user does not exist', 'error')
+            flash('User does not exist.', 'error')
 
     return render_template('login.html')
 
